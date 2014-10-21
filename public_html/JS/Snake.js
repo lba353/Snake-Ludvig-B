@@ -89,11 +89,17 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
     var snakeHeadX = snake[0].x;
     var snakeHeadY = snake[0].y;
     
-    if(snakeDirection === "down") { // Tells the snake to first go down, then go right if it can't go down.
+    if(snakeDirection === "down") { // Tells the snake to first go down. If it can't, then go right. If it can't, then go left. If it can't, then go up.
         snakeHeadY++;
     }
-    else {
+    else if(snakeDirection === "right") {
         snakeHeadX++;
+    }
+    else if(snakeDirection === "left") {
+        snakeHeadX--;
+    }
+    else if(snakeDirection === "up") {
+        snakeHeadY--;
     }
         
     snakeTail = snake.pop();
@@ -137,7 +143,16 @@ function setFoodPosition() { // Sets the food in a random position somewhere on 
 function keyboardHandler(event) { // Tells the console what key was pressed down and its key code.
     console.log(event);
     
-    if(event.keyCode === "39") {
-        snakeDirection = "right"
+    if(event.keyCode == "39") {
+        snakeDirection = "right";
+    }
+    else if(event.keyCode == "40") {
+        snakeDirection = "down";
+    }
+    else if(event.keyCode == "37") {
+        snakeDirection = "left";
+    }
+    else if(event.keyCode == "38") {
+        snakeDirection = "up";
     }
 }

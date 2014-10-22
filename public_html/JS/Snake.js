@@ -66,7 +66,7 @@ function gameDraw() { // Draws the game background's color to take up the whole 
 
 function snakeInitialize() { //  Tells the snake how long and big the snake to be and tells it to go down.
     snake = [];
-    snakeLength = 5;
+    snakeLength = 1;
     snakeSize = 20;
     snakeDirection = "down";
     
@@ -89,7 +89,9 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
     var snakeHeadX = snake[0].x;
     var snakeHeadY = snake[0].y;
     
-    if(snakeDirection === "down") { // Tells the snake to first go down. If it can't, then go right. If it can't, then go left. If it can't, then go up.
+    // Tells the snake to first go down. If it can't, then go right. If it can't, then go left. If it can't, then go up.
+    
+    if(snakeDirection === "down") { 
         snakeHeadY++;
     }
     else if(snakeDirection === "right") {
@@ -101,8 +103,11 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
     else if(snakeDirection === "up") {
         snakeHeadY--;
     }
+    
+    checkFoodCollisions(snakeHeadX, snakeHeadY);
+    checkWallCollisions(snakeheadX, snakeHeadY);
         
-    snakeTail = snake.pop();
+    var snakeTail = snake.pop();
     snakeTail.x = snakeHeadX;
     snakeTail.y = snakeHeadY;
     snake.unshift(snakeTail);
@@ -123,15 +128,15 @@ function foodInitialize() { //
 
 function foodDraw() { // Draws the food a certain color and certain size.
     context.fillStyle = "yellow";
-    context.fillRect(food.x, food.y, snakeSize, snakeSize);
+    context.fillRect(food.x * snakeSize, food.y * snakeSize, snakeSize, snakeSize);
 }
 
-function setFoodPosition() { // Sets the food in a random position somewhere on the screen when it is eaten.
+function setFoodPosition() { // Sets the food in a random position somewhere on the snake grid when it is eaten.
     var randomX = Math.floor(Math.random() * screenWidth);
     var randomY = Math.floor(Math.random() * screenHeight);
     
-    food.x = randomX;
-    food.y = randomY;
+    food.x = Math.floor(randomX / snakeSize);
+    food.y = Math.floor(randomY / snakeSize);
 }
 
 /* ----------------------------------------------------------------------------
@@ -143,16 +148,39 @@ function setFoodPosition() { // Sets the food in a random position somewhere on 
 function keyboardHandler(event) { // Tells the console what key was pressed down and its key code.
     console.log(event);
     
-    if(event.keyCode == "39") {
+    // The following lines of code control the snake movement.
+    
+    if(event.keyCode == "39" && snakeDirection != "left") {
         snakeDirection = "right";
     }
-    else if(event.keyCode == "40") {
+    else if(event.keyCode == "40" && snakeDirection != "up") {
         snakeDirection = "down";
     }
-    else if(event.keyCode == "37") {
+    else if(event.keyCode == "37" && snakeDirection != "right") {
         snakeDirection = "left";
     }
-    else if(event.keyCode == "38") {
+    else if(event.keyCode == "38" && snakeDirection != "down") {
         snakeDirection = "up";
+    }
+}
+
+/* ----------------------------------------------------------------------------
+ * Collision Functions
+ * ----------------------------------------------------------------------------
+ */
+
+function checkFoodCollisions(snakeHeadX, snakeHeadY) { //
+    if(snakeHeadX === food.x && snakeHeadY === food.y) {
+        snake.push({
+            x: 0,
+            y: 0
+        });
+        snakeLength++;
+    }
+}
+
+function checkWallCollisions(snakeHeadX, snakeHeadY) {
+    if() {
+        
     }
 }

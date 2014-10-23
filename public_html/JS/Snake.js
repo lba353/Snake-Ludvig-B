@@ -105,7 +105,7 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
     }
     
     checkFoodCollisions(snakeHeadX, snakeHeadY);
-    checkWallCollisions(snakeheadX, snakeHeadY);
+    checkWallCollisions(snakeHeadX, snakeHeadY);
         
     var snakeTail = snake.pop();
     snakeTail.x = snakeHeadX;
@@ -150,16 +150,16 @@ function keyboardHandler(event) { // Tells the console what key was pressed down
     
     // The following lines of code control the snake movement.
     
-    if(event.keyCode == "39" && snakeDirection != "left") {
+    if(event.keyCode == "39" || event.keyCode == "68" && snakeDirection != "left") {
         snakeDirection = "right";
     }
-    else if(event.keyCode == "40" && snakeDirection != "up") {
+    else if(event.keyCode == "40" || event.keyCode == "83" && snakeDirection != "up") {
         snakeDirection = "down";
     }
-    else if(event.keyCode == "37" && snakeDirection != "right") {
+    else if(event.keyCode == "37" || event.keyCode == "65" && snakeDirection != "right") {
         snakeDirection = "left";
     }
-    else if(event.keyCode == "38" && snakeDirection != "down") {
+    else if(event.keyCode == "38" || event.keyCode == "87" && snakeDirection != "down") {
         snakeDirection = "up";
     }
 }
@@ -169,7 +169,7 @@ function keyboardHandler(event) { // Tells the console what key was pressed down
  * ----------------------------------------------------------------------------
  */
 
-function checkFoodCollisions(snakeHeadX, snakeHeadY) { //
+function checkFoodCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the snake ate the food.
     if(snakeHeadX === food.x && snakeHeadY === food.y) {
         snake.push({
             x: 0,
@@ -179,8 +179,9 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY) { //
     }
 }
 
-function checkWallCollisions(snakeHeadX, snakeHeadY) {
-    if() {
+function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the snake hit the wall.
+    if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize  < 0 || 
+       snakeHeadY * snakeSize >= screenHeight || snakeHeadY * snakeSize < 0) {
         
     }
 }

@@ -18,6 +18,11 @@ var context;
 var screenWidth;
 var screenHeight;
 
+// Game State Variables
+
+var gameState;
+var gameOverMenu;
+
 /* ----------------------------------------------------------------------------
  * Called Functions
  * ----------------------------------------------------------------------------
@@ -44,14 +49,19 @@ function gameInitialize() { //
     canvas.height = screenHeight;
     
     document.addEventListener("keydown", keyboardHandler);
+    
+    gameOverMenu = document.getElementById("gameOver");
+    
+    setState("PLAY");
 }
 
 function gameLoop() { // Tells the game to keep repeating these functions.
     gameDraw();           
-    snakeUpdate();
-    snakeDraw();
-    foodDraw();
-    
+    if (gameState == "PLAY") {
+        snakeUpdate();
+        snakeDraw();
+        foodDraw();
+    }
 }
 
 function gameDraw() { // Draws the game background's color to take up the whole screen.
@@ -174,7 +184,7 @@ function keyboardHandler(event) { // Tells the console what key was pressed down
  * ----------------------------------------------------------------------------
  */
 
-function checkFoodCollisions(snakeHeadX, snakeHeadY, randomX, randomY) { // Checks to see if the snake ate the food.
+function checkFoodCollisions(snakeHeadX, snakeHeadY, randomX, randomY) { // Checks to see if the snake ate the food and then sets it in a random position when it is eaten.
     if(snakeHeadX === food.x && snakeHeadY === food.y) {
         snake.push({
             x: 0,
@@ -193,7 +203,7 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY, randomX, randomY) { // Chec
 function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the snake hit the wall.
     if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize  < 0 || 
        snakeHeadY * snakeSize >= screenHeight || snakeHeadY * snakeSize < 0) {
-        
+       setState("GAME OVER");
     }
 }
 
@@ -202,5 +212,25 @@ function checkSnakeCollisions(snakeHeadX, snakeHeadY) {
         if(snakeHeadX == snake[index].x && snakeHeadY == snake[index].y) {
             console.log("Snake Collision");
         }
+    }
+}
+
+/* ----------------------------------------------------------------------------
+ * Game State Functions
+ * ----------------------------------------------------------------------------
+ */
+
+function  setState(state) { //
+    gameState = state;
+    showMenu(state);
+}
+
+function displayMenu(menu) { //
+    menu.style.visibility = "visible";
+}
+
+function showMenu (state) { //
+    if(state == "GAME OVER") {
+        displayMenu(gameOverMenu);
     }
 }

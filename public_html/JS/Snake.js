@@ -17,11 +17,13 @@ var food; // Food Variable
 var context;
 var screenWidth;
 var screenHeight;
+var availHeight;
 
 // Game State Variables
 
 var gameState;
 var gameOverMenu;
+var restartButton;
 
 /* ----------------------------------------------------------------------------
  * Called Functions
@@ -44,6 +46,7 @@ function gameInitialize() { //
     
     screenWidth = window.innerWidth;
     screenHeight = window.innerHeight;
+    availHeight = screen.availHeight;
     
     canvas.width = screenWidth;
     canvas.height = screenHeight;
@@ -51,6 +54,10 @@ function gameInitialize() { //
     document.addEventListener("keydown", keyboardHandler);
     
     gameOverMenu = document.getElementById("gameOver");
+    centerMenuPosition(gameOverMenu);
+    
+    restartButton = document.getElementById("restartButton");
+    restartButton.addEventListener("click", gameRestart)
     
     setState("PLAY");
 }
@@ -69,6 +76,13 @@ function gameDraw() { // Draws the game background's color to take up the whole 
     context.fillRect(0, 0, screenWidth, screenHeight);
 }
 
+function gameRestart() {
+    snakeInitialize();
+    foodInitialize();
+    hideMenu(gameOverMenu);
+    setState("PLAY");
+}
+
 /* ----------------------------------------------------------------------------
  * Snake Functions
  * ----------------------------------------------------------------------------
@@ -78,7 +92,7 @@ function snakeInitialize() { //  Tells the snake how long and big the snake to b
     snake = [];
     snakeLength = 5;
     snakeSize = 20;
-    snakeDirection = "down";
+    snakeDirection = "right";
     
     for(var index = snakeLength - 1; index >= 0; index--) { // 
         snake.push( {
@@ -201,8 +215,16 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY, randomX, randomY) { // Chec
 }
 
 function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the snake hit the wall.
-    if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize  < 0 || 
-       snakeHeadY * snakeSize >= screenHeight || snakeHeadY * snakeSize < 0) {
+    var useHeight;
+    if(availHeight < screenHeight){
+        useHeight = availHeight;
+    }
+    else{
+        useHeight = screenHeight;
+    }
+    
+    if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize < 0 || 
+       snakeHeadY * snakeSize >= useHeight || snakeHeadY * snakeSize < 0) {
        setState("GAME OVER");
     }
 }
@@ -210,7 +232,7 @@ function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the s
 function checkSnakeCollisions(snakeHeadX, snakeHeadY) {
     for(var index = 1; index < snake.length; index++) {
         if(snakeHeadX == snake[index].x && snakeHeadY == snake[index].y) {
-            console.log("Snake Collision");
+            setState("GAME OVER")
         }
     }
 }
@@ -225,12 +247,26 @@ function  setState(state) { //
     showMenu(state);
 }
 
-function displayMenu(menu) { //
+/* ----------------------------------------------------------------------------
+ * Menu Functions
+ * ----------------------------------------------------------------------------
+ */
+
+function displayMenu (menu) { //
     menu.style.visibility = "visible";
+}
+
+function hideMenu (menu) { // 
+    
 }
 
 function showMenu (state) { //
     if(state == "GAME OVER") {
         displayMenu(gameOverMenu);
     }
+}
+
+function centerMenuPosition (menu) { // Centers the menu
+    menu.style.top = (screenHeight / 2) - (menu.offsetHeight / 2) + "px";
+    menu.style.left = (screenWidth / 2) - (menu.offsetWidth / 2) + "px";
 }

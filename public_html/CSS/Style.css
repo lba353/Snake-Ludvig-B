@@ -7,12 +7,12 @@ body {
     display: block;
 }
 
-#gameOver {
+#gameOver, #playHUD, #start {
     position: absolute;
     visibility: hidden;
 }
 
-h1, h3 {
+h1, h2, h3 {
     font-family: 'Permanent Marker', cursive;
     color: red;
 }
@@ -23,7 +23,7 @@ h1, h3 {
     margin-top: 0px;
 }
 
-#restartButton {
+#restartButton, #startButton {
     font-size: 50px;
     border: 2px solid red;
     border-radius: 10px;
@@ -31,4 +31,10 @@ h1, h3 {
 
 #restartButton:hover {
     background-color: blue;
+}
+
+#scoreboard {
+    font-size: 30px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }

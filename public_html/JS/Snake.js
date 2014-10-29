@@ -23,7 +23,10 @@ var availHeight;
 
 var gameState;
 var gameOverMenu;
+var startMenu;
 var restartButton;
+var playHUD;
+var scoreboard;
 
 /* ----------------------------------------------------------------------------
  * Called Functions
@@ -40,7 +43,7 @@ setInterval(gameLoop, 1000/30); // This makes the function in pparenthesses to l
  * ----------------------------------------------------------------------------
  */
 
-function gameInitialize() { // 
+function gameInitialize() { // Tells the game what to do when it is first booted up.
     var canvas = document.getElementById("game-screen");
     context = canvas.getContext("2d"); 
     
@@ -53,11 +56,22 @@ function gameInitialize() { //
     
     document.addEventListener("keydown", keyboardHandler);
     
+    startMenu = document.getElementById("start");
+    centerMenuPosition(startMenu);
+    
+    startButton = document.getElementById("startButton");
+    startButton.addEventListener("click", )
+    
+    setState("START");
+    
     gameOverMenu = document.getElementById("gameOver");
     centerMenuPosition(gameOverMenu);
     
     restartButton = document.getElementById("restartButton");
-    restartButton.addEventListener("click", gameRestart)
+    restartButton.addEventListener("click", gameRestart);
+    
+    playHUD = document.getElementById("playHUD");    
+    scoreboard = document.getElementById("scoreboard");
     
     setState("PLAY");
 }
@@ -68,6 +82,7 @@ function gameLoop() { // Tells the game to keep repeating these functions.
         snakeUpdate();
         snakeDraw();
         foodDraw();
+        drawScoreboard();
     }
 }
 
@@ -76,7 +91,7 @@ function gameDraw() { // Draws the game background's color to take up the whole 
     context.fillRect(0, 0, screenWidth, screenHeight);
 }
 
-function gameRestart() {
+function gameRestart() { // Tells the game to do this when the game restarts.
     snakeInitialize();
     foodInitialize();
     hideMenu(gameOverMenu);
@@ -90,7 +105,7 @@ function gameRestart() {
 
 function snakeInitialize() { //  Tells the snake how long and big the snake to be and tells it to go down.
     snake = [];
-    snakeLength = 5;
+    snakeLength = 1;
     snakeSize = 20;
     snakeDirection = "right";
     
@@ -130,10 +145,14 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
         snakeHeadY--;
     }
     
+    //
+    
     checkFoodCollisions(snakeHeadX, snakeHeadY);
     checkWallCollisions(snakeHeadX, snakeHeadY);
     checkSnakeCollisions(snakeHeadX, snakeHeadY);
     
+    // 
+ 
     var snakeTail = snake.pop();
     snakeTail.x = snakeHeadX;
     snakeTail.y = snakeHeadY;
@@ -145,7 +164,7 @@ function snakeUpdate() { // Updates the snake after it has eaten a piece of food
  * ----------------------------------------------------------------------------
  */
 
-function foodInitialize() { // 
+function foodInitialize() { // Sets where the food is first placed.
     food = {
         x: 0,
         y: 0
@@ -229,10 +248,10 @@ function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the s
     }
 }
 
-function checkSnakeCollisions(snakeHeadX, snakeHeadY) {
+function checkSnakeCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the snake hit itself.
     for(var index = 1; index < snake.length; index++) {
         if(snakeHeadX == snake[index].x && snakeHeadY == snake[index].y) {
-            setState("GAME OVER")
+            setState("GAME OVER");
         }
     }
 }
@@ -252,21 +271,31 @@ function  setState(state) { //
  * ----------------------------------------------------------------------------
  */
 
-function displayMenu (menu) { //
+function displayMenu(menu) { // This shows a menu when needed.
     menu.style.visibility = "visible";
 }
 
-function hideMenu (menu) { // 
-    
+function hideMenu(menu) { // This hides a menu when needed.
+    menu.style.visibility = "hidden";
 }
 
-function showMenu (state) { //
+function showMenu(state) { // Shows what menu to use under certain cases.
     if(state == "GAME OVER") {
         displayMenu(gameOverMenu);
     }
+    else if(state == "PLAY") {
+        displayMenu(playHUD);
+    }
+    else if(state == "START") {
+        displayMenu(startMenu);
+    }
 }
 
-function centerMenuPosition (menu) { // Centers the menu
+function centerMenuPosition(menu) { // Centers the menu.
     menu.style.top = (screenHeight / 2) - (menu.offsetHeight / 2) + "px";
     menu.style.left = (screenWidth / 2) - (menu.offsetWidth / 2) + "px";
+}
+
+function drawScoreboard() { // Draws the scoreboard ans displays the length of the snake.
+    scoreboard.innerHTML = "Length: " + snakeLength;
 }

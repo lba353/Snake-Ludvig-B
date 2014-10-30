@@ -60,7 +60,7 @@ function gameInitialize() { // Tells the game what to do when it is first booted
     centerMenuPosition(startMenu);
     
     startButton = document.getElementById("startButton");
-    startButton.addEventListener("click", )
+    startButton.addEventListener("click", gameRestart);
     
     setState("START");
     
@@ -72,8 +72,6 @@ function gameInitialize() { // Tells the game what to do when it is first booted
     
     playHUD = document.getElementById("playHUD");    
     scoreboard = document.getElementById("scoreboard");
-    
-    setState("PLAY");
 }
 
 function gameLoop() { // Tells the game to keep repeating these functions.
@@ -83,6 +81,7 @@ function gameLoop() { // Tells the game to keep repeating these functions.
         snakeDraw();
         foodDraw();
         drawScoreboard();
+        hideMenu(startMenu);
     }
 }
 

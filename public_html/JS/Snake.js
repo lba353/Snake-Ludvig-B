@@ -28,6 +28,11 @@ var restartButton;
 var playHUD;
 var scoreboard;
 
+//Audio Variables
+
+var foodMusic;
+var gameOverMusic;
+
 /* ----------------------------------------------------------------------------
  * Called Functions
  * ----------------------------------------------------------------------------
@@ -72,6 +77,9 @@ function gameInitialize() { // Tells the game what to do when it is first booted
     
     playHUD = document.getElementById("playHUD");    
     scoreboard = document.getElementById("scoreboard");
+    
+    foodMusic = document.getElementById("food");
+    gameOverMusic = document.getElementById("gameOverSound");
 }
 
 function gameLoop() { // Tells the game to keep repeating these functions.
@@ -229,6 +237,8 @@ function checkFoodCollisions(snakeHeadX, snakeHeadY, randomX, randomY) { // Chec
         
         food.x = Math.floor(randomX / snakeSize);
         food.y = Math.floor(randomY / snakeSize);
+        
+        foodMusic.play();
     }
 }
 
@@ -244,6 +254,7 @@ function checkWallCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the s
     if(snakeHeadX * snakeSize >= screenWidth || snakeHeadX * snakeSize < 0 || 
        snakeHeadY * snakeSize >= useHeight || snakeHeadY * snakeSize < 0) {
        setState("GAME OVER");
+       gameOverMusic.play();
     }
 }
 
@@ -251,6 +262,7 @@ function checkSnakeCollisions(snakeHeadX, snakeHeadY) { // Checks to see if the 
     for(var index = 1; index < snake.length; index++) {
         if(snakeHeadX == snake[index].x && snakeHeadY == snake[index].y) {
             setState("GAME OVER");
+            gameOverMusic.play();
         }
     }
 }

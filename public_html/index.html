@@ -13,10 +13,16 @@
         </section>
         <section id="playHUD">
             <h2 id="scoreboard"></h2>
+            <audio id="food">
+                <source src="Music/9b0c7a_Pacman_Eating_Cherry_Sound_Effect.mp3" type="audio/mp3"/> 
+            </audio>
         </section>
         <section id="gameOver">
             <h1 class="title">GAME OVER!</h1>
             <h3 id="restartButton" align="center">Restart?</h3>
+            <audio loop id="gameOverSound">
+                <source src="Music/2b0d44_Pacman_Dies_Sound_Effect.mp3" type="audio/mp3"/>
+            </audio>
         </section>
         
         <canvas id="game-screen"></canvas>
@@ -24,12 +30,11 @@
         <script src="JS/Snake.js"></script>
     </body>
     
-    <!-- Audio -->
-    
-    <audio id="gameOverSound">
-        <source src="http://soundfxcenter.com/video-games/pacman/2b0d44_Pacman_Dies_Sound_Effect.mp3" type="audio/mp3"/>
+    <!-- Audio I Used-->    
+    <audio loop id="gameOverSound">
+        <source src="Music/2b0d44_Pacman_Dies_Sound_Effect.mp3" type="audio/mp3"/>
     </audio>
     <audio id="food">
-        <source src="http://soundfxcenter.com/video-games/pacman/9b0c7a_Pacman_Eating_Cherry_Sound_Effect.mp3" type="audio/mp3"/> 
+        <source src="Music/9b0c7a_Pacman_Eating_Cherry_Sound_Effect.mp3" type="audio/mp3"/> 
     </audio>
 </html>
